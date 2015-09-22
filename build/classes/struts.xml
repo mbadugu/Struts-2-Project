@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+ 	<constant name="struts.custom.i18n.resources" value="messages"></constant><!-- Internationalization  -->
+    <constant name="struts.mapper.action.prefix.enabled" value="true" /><!-- Enabling multiple actions for multiple submit buttons  -->
+    
+    <package name="default" namespace="/" extends="struts-default">
+    
+    	 <interceptors>
+    		<interceptor name="myInterceptor" class="com.mtc.interceptors.CustomInterceptor"></interceptor>
+   		 </interceptors>
+    
+    	<global-results>
+            <result name="error">handleErrorPage.jsp</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+  
+    	<action name="loginProcess" class="com.mtc.action.LoginAction">
+    		<result name="success">/welcome.jsp</result>
+    		<result name="input" >/login.jsp</result>
+    		<interceptor-ref name="defaultStack"></interceptor-ref>
+     		<interceptor-ref name="logger"></interceptor-ref>
+     		<interceptor-ref name="timer"></interceptor-ref>
+       		<interceptor-ref name="myInterceptor"></interceptor-ref>
+       	</action>
+    
+    	<action name="productSearch" class="com.mtc.action.ProductAction">
+    		<result name="success" >/productView.jsp</result>
+    	</action>
+    
+    	<action name="allProducts" class="com.mtc.action.AllProductsAction">
+    		<result name="success" >/produtRecords.jsp</result>
+    		<interceptor-ref name="logger"></interceptor-ref>
+    		<interceptor-ref name="timer"></interceptor-ref>
+    	</action>
+    
+    	<action name="productDeleteUpdate" class="com.mtc.action.ProductDeleteAction" >
+   		 	<result name="success">/produtRecords.jsp</result>
+    	</action>
+   
+    	<action name="addProductRecord" class="com.mtc.action.AddProductAction">
+    		<result name="success">/produtRecords.jsp</result>
+    		<result name="input">/addProduct.jsp</result>
+    	</action>
+    
+     	<action name="editRecord" class="com.mtc.action.EditRecordAction" >
+    		<result name="success">/produtRecords.jsp</result>
+    		<result name="input" >/edit.jsp</result>
+    	</action>
+    	
+    	<action name="populateProduct" class="com.mtc.action.PopulateProductAction" >
+    		<result name="success" type="json">/edit.jsp</result>
+    	</action>
+    
+  </package>
+    
+    <!--  
+    	  <include file="struts-customer.xml"></include>
+    	  <include file="struts-staff.xml"></include>
+ 	-->
+ 		 <include file="struts-customer.xml"></include>
+    	  <include file="struts-staff.xml"></include>
+		 
+ </struts>
